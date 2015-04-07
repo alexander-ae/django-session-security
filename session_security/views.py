@@ -4,6 +4,7 @@ import time
 from datetime import datetime, timedelta
 
 from django.contrib import auth
+from django.contrib import messages
 from django.views import generic
 from django import http
 
@@ -21,6 +22,7 @@ class PingView(generic.View):
     def get(self, request, *args, **kwargs):
         if '_session_security' not in request.session:
             # It probably has expired already
+            messages.warning(request, 'La sesión ha expirado.')
             return http.HttpResponse('logout')
 
         last_activity = get_last_activity(request.session)
